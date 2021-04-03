@@ -1,0 +1,6 @@
+.homepage-container .cover-image {
+  background: url('http://localhost:1234/public/coverimage.JPG') no-repeat
+    center center/cover;
+  height: 70vh;
+  margin-top: 50px;
+}

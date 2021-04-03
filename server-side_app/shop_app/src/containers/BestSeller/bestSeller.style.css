@@ -1,0 +1,17 @@
+.best-seller-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-top: 50px;
+  min-height: 500px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.best-seller-container .best-seller-products {
+  width: 60%;
+  display: flex;
+  justify-content: space-evenly;
+
+  flex-wrap: wrap;
+}
