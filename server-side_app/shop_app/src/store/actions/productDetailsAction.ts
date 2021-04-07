@@ -21,7 +21,7 @@ export type ProductDetailsReducerAction =
 class ProductDetailsAction {
   // TypeScript includes the readonly keyword that makes a property as read-only in the class, type or interface.
   // Prefix readonly is used to make a property as read-only.
-  // Read-only members can be accessed outside the class, but their value cannot be changed.
+  // Read-only members can be accessed outside the class, but their value cannot be changed like CONST
 
   // Static properties and methods are shared by all instances of a class.
   // Use the static keyword before a property or a method to make it static.
