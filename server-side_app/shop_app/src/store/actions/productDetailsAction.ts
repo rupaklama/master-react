@@ -1,22 +1,36 @@
-import { ProductDetailsReducerState } from './../reducers/productDetailsReducer';
+import { GetProductsOptions } from '../../api/productsDetailsAPI';
+import { Products, ShopProducts } from './../reducers/productDetailsReducer';
 
 // Action Types Interfaces
-export interface ProductDetailsSetAction {
+export interface SetShopProductsAction {
   // TypeScript adds a 'typeof' operator you can use in a type context to refer to the type of a variable or property
-  type: typeof ProductDetailsAction.SET_PRODUCT_DETAILS;
-  productDetails: ProductDetailsReducerState;
+  type: typeof ProductDetailsAction.SET_SHOP_PRODUCTS;
+  shopProducts: ShopProducts;
 }
 
-export interface ProductDetailsFetchAction {
-  type: typeof ProductDetailsAction.FETCH_PRODUCTS_DETAILS;
+export interface FetchShopProductsAction {
+  type: typeof ProductDetailsAction.FETCH_SHOP_PRODUCTS;
+  options: GetProductsOptions;
+}
+
+export interface SetBestSellerProductsAction {
+  // TypeScript adds a 'typeof' operator you can use in a type context to refer to the type of a variable or property
+  type: typeof ProductDetailsAction.SET_BEST_SELLER_PRODUCTS;
+  bestSellerProducts: Products[];
+}
+
+export interface FetchBestSellerProductsAction {
+  type: typeof ProductDetailsAction.FETCH_BEST_SELLER_PRODUCTS;
 }
 
 // NOTE: 'Type union' can be very long, we can use 'Type Alias' if we want instead.
 // 'Type Alias' is just a name that represents another Type, similar to variable but for type.
 // 'Type Alias' is to create New Name for another Type.
 export type ProductDetailsReducerAction =
-  | ProductDetailsSetAction
-  | ProductDetailsFetchAction;
+  | SetShopProductsAction
+  | FetchShopProductsAction
+  | SetBestSellerProductsAction
+  | FetchBestSellerProductsAction;
 
 class ProductDetailsAction {
   // TypeScript includes the readonly keyword that makes a property as read-only in the class, type or interface.
@@ -29,28 +43,50 @@ class ProductDetailsAction {
   // TWO Action Types
   // When Redux Saga dispatches an Action, it will do everything for us
   // dispatch an Action to fetch the products
-  static readonly FETCH_PRODUCTS_DETAILS = 'FETCH_PRODUCTS_DETAILS'; // same as Constant
+  static readonly FETCH_SHOP_PRODUCTS = 'FETCH_SHOP_PRODUCTS'; // same as Constant
 
-  // to add fetch data into our store
-  static readonly SET_PRODUCT_DETAILS = 'SET_PRODUCT_DETAILS';
+  // to fetch best seller products
+  static readonly FETCH_BEST_SELLER_PRODUCTS = 'FETCH_BEST_SELLER_PRODUCTS';
+
+  // to add fetched data into our store
+  static readonly SET_SHOP_PRODUCTS = 'SET_SHOP_PRODUCTS';
+
+  // to add fetched best seller products in our store
+  static readonly SET_BEST_SELLER_PRODUCTS = 'SET_BEST_SELLER_PRODUCTS';
 
   // NOTE - A class can include an arrow function as a property
 
   // Action Creators as a Class methods
   // action creator to fetch data
-  fetch = (): ProductDetailsFetchAction => {
+  fetchShopProducts = (
+    options: GetProductsOptions
+  ): FetchShopProductsAction => {
     return {
-      type: ProductDetailsAction.FETCH_PRODUCTS_DETAILS,
+      type: ProductDetailsAction.FETCH_SHOP_PRODUCTS,
+      options,
     };
   };
 
   // action creator to add fetch data 'payload' into our store
-  set = (
-    productDetails: ProductDetailsReducerState
-  ): ProductDetailsSetAction => {
+  setShopProducts = (shopProducts: ShopProducts): SetShopProductsAction => {
     return {
-      type: ProductDetailsAction.SET_PRODUCT_DETAILS,
-      productDetails, // payload
+      type: ProductDetailsAction.SET_SHOP_PRODUCTS,
+      shopProducts, // payload
+    };
+  };
+
+  fetchALLBestSellerProducts = (): FetchBestSellerProductsAction => {
+    return {
+      type: ProductDetailsAction.FETCH_BEST_SELLER_PRODUCTS,
+    };
+  };
+
+  setBestSellerProducts = (
+    bestSellerProducts: Products[]
+  ): SetBestSellerProductsAction => {
+    return {
+      type: ProductDetailsAction.SET_BEST_SELLER_PRODUCTS,
+      bestSellerProducts,
     };
   };
 }

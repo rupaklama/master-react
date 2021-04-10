@@ -1,29 +1,77 @@
 import { Component } from 'react';
+import {
+  connect,
+  MapDispatchToPropsFunction,
+  MapStateToProps,
+} from 'react-redux';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import ProductDetailsAction from '../../store/actions/productDetailsAction';
+import { RootState } from '../../store/reducers';
+import { Products } from '../../store/reducers/productDetailsReducer';
 import './bestSeller.style.css';
 
-class BestSeller extends Component {
+export interface BestSellerStateProps {
+  bestSellerProducts: Products[];
+}
+
+export interface BestSellerDispatchProps {
+  fetchAllBestSellerProducts(): any;
+  // addToCart(product: ProductPurchase): any;
+}
+
+export type BestSellerProps = BestSellerStateProps & BestSellerDispatchProps;
+
+class BestSeller extends Component<BestSellerProps> {
+  componentDidMount() {
+    const { bestSellerProducts } = this.props;
+
+    // we already have fetched data in our redux store
+    // dispatch an action only when we don't have data in our store
+    if (!bestSellerProducts.length) {
+      this.props.fetchAllBestSellerProducts();
+    }
+  }
+
+  renderBestSellerProducts = () => {
+    const { bestSellerProducts } = this.props;
+
+    return bestSellerProducts.map(({ id, title, variants }) => (
+      <ProductCard key={id} name={title} url={variants[0].image} />
+    ));
+  };
+
   render() {
     return (
       <div className='best-seller-container'>
         <h2>Best Seller</h2>
         <div className='best-seller-products'>
-          <ProductCard
-            name='Formal Dress Shirts Casual Long Sleeve Slim Fit'
-            url='http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Long%20Sleeve%20Slim%20Fit%20-%20Blue.png'
-          />
-          <ProductCard
-            name='Formal Dress Shirts Casual Long Sleeve Slim Fit'
-            url='http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Long%20Sleeve%20Slim%20Fit%20-%20Blue.png'
-          />
-          <ProductCard
-            name='Formal Dress Shirts Casual Long Sleeve Slim Fit'
-            url='http://localhost:1234/public/images/Formal%20Dress%20Shirts%20Casual%20Long%20Sleeve%20Slim%20Fit%20-%20Blue.png'
-          />
+          {this.renderBestSellerProducts()}
         </div>
       </div>
     );
   }
 }
 
-export default BestSeller;
+const mapStateToProps: MapStateToProps<
+  BestSellerStateProps,
+  {},
+  RootState
+> = state => {
+  // console.log(state);
+
+  return {
+    bestSellerProducts: state.productDetails.bestSellerProducts,
+  };
+};
+
+const mapDispatchToProps: MapDispatchToPropsFunction<
+  BestSellerDispatchProps,
+  {}
+> = dispatch => {
+  const { fetchALLBestSellerProducts } = new ProductDetailsAction();
+  return {
+    fetchAllBestSellerProducts: () => dispatch(fetchALLBestSellerProducts()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BestSeller);

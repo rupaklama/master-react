@@ -34,7 +34,7 @@ const store = createStore(
 sagaMiddleware.run(startRootSaga); // to run our root saga
 
 // dispatch an action to test
-store.dispatch({ type: ProductDetailsAction.FETCH_PRODUCTS_DETAILS });
+// store.dispatch({ type: ProductDetailsAction.FETCH_PRODUCTS_DETAILS });
 // to access store
 (window as any).shopspree = store;
 
