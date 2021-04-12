@@ -1,34 +1,29 @@
 import React from 'react';
-import {
-  connect,
-  MapDispatchToPropsFunction,
-  MapStateToProps,
-} from 'react-redux';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import ProductCard from '../../components/ProductCard/ProductCard';
 
 import { RootState } from '../../store/reducers';
-import { ShopProducts } from '../../store/reducers/productDetailsReducer';
-import ProductDetailsAction, {
-  FetchShopProductsAction,
-} from '../../store/actions/productDetailsAction';
+import { ProductFilters, ShopProducts } from '../../store/reducers/productDetailsReducer';
+import ProductDetailsAction, { FetchShopProductsAction } from '../../store/actions/productDetailsAction';
 import './allProductsPage.style.css';
 import { GetProductsOptions } from '../../api/productsDetailsAPI';
+import AllProductsSideBar from '../../components/allProductsSideBar/AllProductsSideBar';
 
 export interface AllProductsStateProps {
   shopProducts: ShopProducts;
+  productFilters: ProductFilters;
 }
 
 export interface AllProductsOwnProps extends RouteComponentProps {}
 
 export interface AllProductsDispatchToProps {
   fetchShopProducts(options: GetProductsOptions): FetchShopProductsAction;
+  fetchShopProductsAndFilters(): any;
 }
 
 // combining all above interfaces
-export type AllProductsPageProps = AllProductsStateProps &
-  AllProductsOwnProps &
-  AllProductsDispatchToProps;
+export type AllProductsPageProps = AllProductsStateProps & AllProductsOwnProps & AllProductsDispatchToProps;
 
 class AllProductsPage extends React.Component<AllProductsPageProps> {
   componentDidMount() {
@@ -37,7 +32,7 @@ class AllProductsPage extends React.Component<AllProductsPageProps> {
     // we already have fetched data in our redux store
     // dispatch an action only when we don't have data in our store
     if (!shopProducts.products.length) {
-      this.props.fetchShopProducts({});
+      this.props.fetchShopProductsAndFilters();
     }
   }
 
@@ -53,9 +48,15 @@ class AllProductsPage extends React.Component<AllProductsPageProps> {
   };
 
   render() {
+    const { productFilters } = this.props;
+    console.log(productFilters); // Object with array of strings
+
     return (
       <div className='all-products-page-container'>
-        <div className='all-products'>{this.renderAllProducts()}</div>
+        <AllProductsSideBar productFilters={productFilters} />
+        <div className='all-products-container'>
+          <div className='all-products'>{this.renderAllProducts()}</div>
+        </div>
       </div>
     );
   }
@@ -64,15 +65,13 @@ class AllProductsPage extends React.Component<AllProductsPageProps> {
 // mapStateToProps function passes Redux Global State data from Redux Store into react components
 // in order to do so, pass mapStateToProps to Connect function
 // mapStateToProps, meaning - pass in the data store in Redux Store to this component as PROPS
-const mapStateToProps: MapStateToProps<
-  AllProductsStateProps,
-  AllProductsOwnProps,
-  RootState
-> = state => {
+const mapStateToProps: MapStateToProps<AllProductsStateProps, AllProductsOwnProps, RootState> = state => {
+  const { shopProducts, productFilters } = state.productDetails;
   // redux store state
   return {
     // accessing 'productDetails' slice of state & assigning to key
-    shopProducts: state.productDetails.shopProducts,
+    shopProducts: shopProducts,
+    productFilters: productFilters,
   };
 };
 
@@ -81,10 +80,11 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   AllProductsDispatchToProps,
   AllProductsOwnProps
 > = dispatch => {
-  const { fetchShopProducts } = new ProductDetailsAction();
+  const { fetchShopProducts, fetchShopProductsAndFilters } = new ProductDetailsAction();
 
   return {
     fetchShopProducts: options => dispatch(fetchShopProducts(options)),
+    fetchShopProductsAndFilters: () => dispatch(fetchShopProductsAndFilters()),
   };
 };
 

@@ -7,8 +7,7 @@ const ShopQuality: React.FC = () => {
         <div className='img-container support-local' />
         <h3> Support Local </h3>
         <p>
-          All materials come from local producers. Together we can create a
-          stronger and better community.
+          All materials come from local producers. Together we can create a stronger and better community.
         </p>
       </div>
       <div className='quality-item-container'>
@@ -19,10 +18,7 @@ const ShopQuality: React.FC = () => {
       <div className='quality-item-container'>
         <div className='img-container eco-friendly' />
         <h3> Eco Friendly </h3>
-        <p>
-          Rest assured that the process and materials used will never harm our
-          environment.
-        </p>
+        <p>Rest assured that the process and materials used will never harm our environment.</p>
       </div>
     </div>
   );

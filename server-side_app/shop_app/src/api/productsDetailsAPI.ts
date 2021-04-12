@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { ProductFilters } from '../store/reducers/productDetailsReducer';
 // import { ProductFilters } from '../store/reducers/shopReducer';
 
 export interface GetProductsOptions {
@@ -7,18 +8,16 @@ export interface GetProductsOptions {
   category?: string[];
 }
 
-// export interface ProductFiltersAPIResponse {
-//   productFilters: ProductFilters;
-// }
+export interface ProductFiltersAPIResponse {
+  productFilters: ProductFilters;
+}
 
 class ProductDetailsAPI {
   getProducts = (options: GetProductsOptions) => {
     const { page, size, category } = options;
     const pageQueryParam = `page=${page || ''}`;
     const sizeQueryParam = `&size=${size || ''}`;
-    const categoryQueryParam = `&category=${
-      category ? category.join('&category=') : ''
-    }`;
+    const categoryQueryParam = `&category=${category ? category.join('&category=') : ''}`;
     return axios.get(
       `http://localhost:1234/products?${pageQueryParam}${sizeQueryParam}${categoryQueryParam}`
     );

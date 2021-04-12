@@ -1,9 +1,5 @@
 import { Component } from 'react';
-import {
-  connect,
-  MapDispatchToPropsFunction,
-  MapStateToProps,
-} from 'react-redux';
+import { connect, MapDispatchToPropsFunction, MapStateToProps } from 'react-redux';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import ProductDetailsAction from '../../store/actions/productDetailsAction';
 import { RootState } from '../../store/reducers';
@@ -44,19 +40,13 @@ class BestSeller extends Component<BestSellerProps> {
     return (
       <div className='best-seller-container'>
         <h2>Best Seller</h2>
-        <div className='best-seller-products'>
-          {this.renderBestSellerProducts()}
-        </div>
+        <div className='best-seller-products'>{this.renderBestSellerProducts()}</div>
       </div>
     );
   }
 }
 
-const mapStateToProps: MapStateToProps<
-  BestSellerStateProps,
-  {},
-  RootState
-> = state => {
+const mapStateToProps: MapStateToProps<BestSellerStateProps, {}, RootState> = state => {
   // console.log(state);
 
   return {
@@ -64,10 +54,7 @@ const mapStateToProps: MapStateToProps<
   };
 };
 
-const mapDispatchToProps: MapDispatchToPropsFunction<
-  BestSellerDispatchProps,
-  {}
-> = dispatch => {
+const mapDispatchToProps: MapDispatchToPropsFunction<BestSellerDispatchProps, {}> = dispatch => {
   const { fetchALLBestSellerProducts } = new ProductDetailsAction();
   return {
     fetchAllBestSellerProducts: () => dispatch(fetchALLBestSellerProducts()),

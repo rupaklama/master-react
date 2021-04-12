@@ -1,5 +1,5 @@
 import { GetProductsOptions } from '../../api/productsDetailsAPI';
-import { Products, ShopProducts } from './../reducers/productDetailsReducer';
+import { Products, ShopProducts, ProductFilters } from './../reducers/productDetailsReducer';
 
 // Action Types Interfaces
 export interface SetShopProductsAction {
@@ -23,6 +23,16 @@ export interface FetchBestSellerProductsAction {
   type: typeof ProductDetailsAction.FETCH_BEST_SELLER_PRODUCTS;
 }
 
+export interface FetchShopProductsAndFilterAction {
+  type: typeof ProductDetailsAction.FETCH_SHOP_PRODUCTS_AND_FILTERS;
+}
+
+export interface SetShopProductsAndFilterAction {
+  type: typeof ProductDetailsAction.SET_SHOP_PRODUCTS_AND_FILTERS;
+  shopProducts: ShopProducts;
+  productFilters: ProductFilters;
+}
+
 // NOTE: 'Type union' can be very long, we can use 'Type Alias' if we want instead.
 // 'Type Alias' is just a name that represents another Type, similar to variable but for type.
 // 'Type Alias' is to create New Name for another Type.
@@ -30,7 +40,9 @@ export type ProductDetailsReducerAction =
   | SetShopProductsAction
   | FetchShopProductsAction
   | SetBestSellerProductsAction
-  | FetchBestSellerProductsAction;
+  | FetchBestSellerProductsAction
+  | FetchShopProductsAndFilterAction
+  | SetShopProductsAndFilterAction;
 
 class ProductDetailsAction {
   // TypeScript includes the readonly keyword that makes a property as read-only in the class, type or interface.
@@ -45,22 +57,26 @@ class ProductDetailsAction {
   // dispatch an Action to fetch the products
   static readonly FETCH_SHOP_PRODUCTS = 'FETCH_SHOP_PRODUCTS'; // same as Constant
 
-  // to fetch best seller products
-  static readonly FETCH_BEST_SELLER_PRODUCTS = 'FETCH_BEST_SELLER_PRODUCTS';
-
   // to add fetched data into our store
   static readonly SET_SHOP_PRODUCTS = 'SET_SHOP_PRODUCTS';
 
+  // to fetch best seller products
+  static readonly FETCH_BEST_SELLER_PRODUCTS = 'FETCH_BEST_SELLER_PRODUCTS';
+
   // to add fetched best seller products in our store
   static readonly SET_BEST_SELLER_PRODUCTS = 'SET_BEST_SELLER_PRODUCTS';
+
+  // product filters
+  static readonly FETCH_SHOP_PRODUCTS_AND_FILTERS = 'FETCH_SHOP_PRODUCTS_AND_FILTERS';
+
+  // apply filters
+  static readonly SET_SHOP_PRODUCTS_AND_FILTERS = 'SET_SHOP_PRODUCTS_AND_FILTERS';
 
   // NOTE - A class can include an arrow function as a property
 
   // Action Creators as a Class methods
   // action creator to fetch data
-  fetchShopProducts = (
-    options: GetProductsOptions
-  ): FetchShopProductsAction => {
+  fetchShopProducts = (options: GetProductsOptions): FetchShopProductsAction => {
     return {
       type: ProductDetailsAction.FETCH_SHOP_PRODUCTS,
       options,
@@ -81,12 +97,27 @@ class ProductDetailsAction {
     };
   };
 
-  setBestSellerProducts = (
-    bestSellerProducts: Products[]
-  ): SetBestSellerProductsAction => {
+  setBestSellerProducts = (bestSellerProducts: Products[]): SetBestSellerProductsAction => {
     return {
       type: ProductDetailsAction.SET_BEST_SELLER_PRODUCTS,
       bestSellerProducts,
+    };
+  };
+
+  fetchShopProductsAndFilters = (): FetchShopProductsAndFilterAction => {
+    return {
+      type: ProductDetailsAction.FETCH_SHOP_PRODUCTS_AND_FILTERS,
+    };
+  };
+
+  setShopProductsAndFilters = (
+    shopProducts: ShopProducts,
+    productFilters: ProductFilters
+  ): SetShopProductsAndFilterAction => {
+    return {
+      type: ProductDetailsAction.SET_SHOP_PRODUCTS_AND_FILTERS,
+      shopProducts,
+      productFilters,
     };
   };
 }
