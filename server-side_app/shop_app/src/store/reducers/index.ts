@@ -1,8 +1,10 @@
+import { userReducer } from './userReducer';
 import { combineReducers } from 'redux';
 import { productDetailsReducer } from './productDetailsReducer';
 
 export const rootReducer = combineReducers({
   productDetails: productDetailsReducer,
+  user: userReducer,
 });
 
 // This is saying we are creating some reducers above,
