@@ -9,10 +9,12 @@ import ProductDetailsAction, { FetchShopProductsAction } from '../../store/actio
 import './allProductsPage.style.css';
 import { GetProductsOptions } from '../../api/productsDetailsAPI';
 import AllProductsSideBar from '../../components/allProductsSideBar/AllProductsSideBar';
+import UserAction from '../../store/actions/userAction';
 
 export interface AllProductsStateProps {
   shopProducts: ShopProducts;
   productFilters: ProductFilters;
+  userFilters: ProductFilters;
 }
 
 export interface AllProductsOwnProps extends RouteComponentProps {}
@@ -67,11 +69,14 @@ class AllProductsPage extends React.Component<AllProductsPageProps> {
 // mapStateToProps, meaning - pass in the data store in Redux Store to this component as PROPS
 const mapStateToProps: MapStateToProps<AllProductsStateProps, AllProductsOwnProps, RootState> = state => {
   const { shopProducts, productFilters } = state.productDetails;
+  const { filters } = state.user;
+
   // redux store state
   return {
     // accessing 'productDetails' slice of state & assigning to key
     shopProducts: shopProducts,
     productFilters: productFilters,
+    userFilters: filters,
   };
 };
 
@@ -81,6 +86,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   AllProductsOwnProps
 > = dispatch => {
   const { fetchShopProducts, fetchShopProductsAndFilters } = new ProductDetailsAction();
+  const { updateUserFilters } = new UserAction();
 
   return {
     fetchShopProducts: options => dispatch(fetchShopProducts(options)),

@@ -37,7 +37,7 @@ const AllProductsSideBar: React.FC<ProductFiltersProps> = ({ productFilters }) =
           {/* func to make first letter to uppercase - Gender */}
           <p>{upperCaseFirstLetter(filterCategory)}</p>
           {filterValues.map(filterValue => {
-            // console.log(filterValue); Men, Short etc
+            console.log(filterValue); // Men, Short etc
             return (
               <div key={filterValue} className='filter-checkbox'>
                 <Checkbox onChange={handleFilterChange(filterCategory, filterValue)}>{filterValue}</Checkbox>
